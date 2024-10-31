@@ -70,3 +70,5 @@
   ```bash
   go tool cover -html=your_absolute_path\task-tracker-cli\coverage.out -o your_absolute_path\task-tracker-cli\coverage.html
   ```
+
+Project Requirements From: https://roadmap.sh/projects/task-tracker
