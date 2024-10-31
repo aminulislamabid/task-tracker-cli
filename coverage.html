@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cmd: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/aminulislamabid/task-tracker-cli/cmd/main.go (0.0%)</option>
+				
+				<option value="file1">github.com/aminulislamabid/task-tracker-cli/internal/storage/storage.go (60.0%)</option>
+				
+				<option value="file2">github.com/aminulislamabid/task-tracker-cli/internal/task/task.go (87.5%)</option>
+				
+				<option value="file3">github.com/aminulislamabid/task-tracker-cli/internal/utils/utils.go (53.3%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "fmt"
+        "os"
+        "strconv"
+
+        "github.com/aminulislamabid/task-tracker-cli/internal/constants"
+        "github.com/aminulislamabid/task-tracker-cli/internal/storage"
+        "github.com/aminulislamabid/task-tracker-cli/internal/task"
+        "github.com/aminulislamabid/task-tracker-cli/internal/utils"
+)
+
+func main() <span class="cov0" title="0">{
+        err := storage.LoadTasks(constants.Filename)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Println("Error loading tasks:", err)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if len(os.Args) &lt; 2 </span><span class="cov0" title="0">{
+                fmt.Println("Usage: &lt;program-run-cmd&gt; &lt;command&gt; [args]")
+                return
+        }</span>
+
+        <span class="cov0" title="0">command := os.Args[1]
+
+        switch command </span>{
+        case "add":<span class="cov0" title="0">
+                if len(os.Args) &lt; 3 </span><span class="cov0" title="0">{
+                        fmt.Println("Usage: [program-run-cmd] add &lt;description&gt;")
+                        return
+                }</span>
+                <span class="cov0" title="0">task.AddTask(os.Args[2], constants.Filename)
+                fmt.Println("Task added successfully")</span>
+
+        case "update":<span class="cov0" title="0">
+                if len(os.Args) &lt; 4 </span><span class="cov0" title="0">{
+                        fmt.Println("Usage: [program-run-cmd] update &lt;id&gt; &lt;description&gt;")
+                        return
+                }</span>
+                <span class="cov0" title="0">id, err := strconv.Atoi(os.Args[2])
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println("Invalid task ID:", os.Args[2])
+                        return
+                }</span>
+                <span class="cov0" title="0">err = task.UpdateTask(id, os.Args[3], constants.Filename)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println(err)
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Println("Task updated successfully")
+                }</span>
+
+        case "delete":<span class="cov0" title="0">
+                if len(os.Args) &lt; 3 </span><span class="cov0" title="0">{
+                        fmt.Println("Usage: [program-run-cmd] delete &lt;id&gt;")
+                        return
+                }</span>
+                <span class="cov0" title="0">id, err := strconv.Atoi(os.Args[2])
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println("Invalid task ID:", os.Args[2])
+                        return
+                }</span>
+                <span class="cov0" title="0">err = task.DeleteTask(id, constants.Filename)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println(err)
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Println("Task deleted successfully")
+                }</span>
+
+        case "mark-in-progress":<span class="cov0" title="0">
+                if len(os.Args) &lt; 3 </span><span class="cov0" title="0">{
+                        fmt.Println("Usage: [program-run-cmd] mark-in-progress &lt;id&gt;")
+                        return
+                }</span>
+                <span class="cov0" title="0">id, err := strconv.Atoi(os.Args[2])
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println("Invalid task ID:", os.Args[2])
+                        return
+                }</span>
+                <span class="cov0" title="0">err = task.MarkInProgress(id, constants.Filename)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println(err)
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Println("Task marked as in progress")
+                }</span>
+
+        case "mark-done":<span class="cov0" title="0">
+                if len(os.Args) &lt; 3 </span><span class="cov0" title="0">{
+                        fmt.Println("Usage: [program-run-cmd] mark-done &lt;id&gt;")
+                        return
+                }</span>
+                <span class="cov0" title="0">id, err := strconv.Atoi(os.Args[2])
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println("Invalid task ID:", os.Args[2])
+                        return
+                }</span>
+                <span class="cov0" title="0">err = task.MarkDone(id, constants.Filename)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Println(err)
+                }</span> else<span class="cov0" title="0"> {
+                        fmt.Println("Task marked as done")
+                }</span>
+
+        case "list":<span class="cov0" title="0">
+                if len(os.Args) == 3 </span><span class="cov0" title="0">{
+                        tasks := task.ListTasksByStatus(utils.ConvertTaskStatus(os.Args[2]))
+                        for _, t := range tasks </span><span class="cov0" title="0">{
+                                fmt.Printf("\nID: %d\nDescription: %s\nStatus: %s\nCreatedAt: %s\nUpdatedAt: %s\n\n",
+                                        t.ID, t.Description, t.Status, t.CreatedAt, t.UpdatedAt)
+                        }</span>
+                } else<span class="cov0" title="0"> {
+                        tasks := task.ListTasks()
+                        for _, t := range tasks </span><span class="cov0" title="0">{
+                                fmt.Printf("\nID: %d\nDescription: %s\nStatus: %s\nCreatedAt: %s\nUpdatedAt: %s\n\n",
+                                        t.ID, t.Description, t.Status, t.CreatedAt, t.UpdatedAt)
+                        }</span>
+                }
+
+        default:<span class="cov0" title="0">
+                fmt.Println("Unknown command", command)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package storage
+
+import (
+        "encoding/json"
+        "os"
+
+        "github.com/aminulislamabid/task-tracker-cli/internal/models"
+)
+
+func LoadTasks(filename string) error <span class="cov8" title="1">{
+        data, err := os.ReadFile(filename)
+        if err != nil </span><span class="cov0" title="0">{
+                if os.IsNotExist(err) </span><span class="cov0" title="0">{
+                        return nil
+                }</span>
+                <span class="cov0" title="0">return err</span>
+        }
+
+        <span class="cov8" title="1">return json.Unmarshal(data, &amp;models.Tasks)</span>
+}
+
+func SaveTasks(filename string) error <span class="cov8" title="1">{
+        data, err := json.MarshalIndent(models.Tasks, "", "  ")
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return os.WriteFile(filename, data, 0644)</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package task
+
+import (
+        "errors"
+        "time"
+
+        "github.com/aminulislamabid/task-tracker-cli/internal/models"
+        "github.com/aminulislamabid/task-tracker-cli/internal/storage"
+        "github.com/aminulislamabid/task-tracker-cli/internal/utils"
+)
+
+func AddTask(description string, filename string) <span class="cov8" title="1">{
+        task := models.Task{
+                ID:          len(models.Tasks) + 1,
+                Description: description,
+                Status:      models.Todo,
+                CreatedAt:   time.Now(),
+                UpdatedAt:   time.Now(),
+        }
+        models.Tasks = append(models.Tasks, task)
+        storage.SaveTasks(filename)
+}</span>
+
+func UpdateTask(id int, description string, filename string) error <span class="cov8" title="1">{
+        task := utils.FindTaskById(id)
+        if task == nil </span><span class="cov0" title="0">{
+                return errors.New("task not found")
+        }</span>
+
+        <span class="cov8" title="1">task.Description = description
+        task.UpdatedAt = time.Now()
+        return storage.SaveTasks(filename)</span>
+}
+
+func DeleteTask(id int, filename string) error <span class="cov8" title="1">{
+        for i, task := range models.Tasks </span><span class="cov8" title="1">{
+                if task.ID == id </span><span class="cov8" title="1">{
+                        models.Tasks = append(models.Tasks[:i], models.Tasks[i+1:]...)
+                        return storage.SaveTasks(filename)
+                }</span>
+        }
+        <span class="cov0" title="0">return errors.New("task not found")</span>
+}
+
+func MarkInProgress(id int, filename string) error <span class="cov8" title="1">{
+        task := utils.FindTaskById(id)
+        if task == nil </span><span class="cov0" title="0">{
+                return errors.New("task not found")
+        }</span>
+        <span class="cov8" title="1">task.Status = models.InProgress
+        task.UpdatedAt = time.Now()
+        return storage.SaveTasks(filename)</span>
+}
+
+func MarkDone(id int, filename string) error <span class="cov8" title="1">{
+        task := utils.FindTaskById(id)
+        if task == nil </span><span class="cov0" title="0">{
+                return errors.New("task not found")
+        }</span>
+        <span class="cov8" title="1">task.Status = models.Done
+        task.UpdatedAt = time.Now()
+        return storage.SaveTasks(filename)</span>
+}
+
+func ListTasks() []models.Task <span class="cov8" title="1">{
+        return models.Tasks
+}</span>
+
+func ListTasksByStatus(status models.TaskStatus) []models.Task <span class="cov8" title="1">{
+        var tasks []models.Task
+        for _, task := range models.Tasks </span><span class="cov8" title="1">{
+                if task.Status == status </span><span class="cov8" title="1">{
+                        tasks = append(tasks, task)
+                }</span>
+        }
+        <span class="cov8" title="1">return tasks</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package utils
+
+import (
+        "os"
+        "testing"
+
+        "github.com/aminulislamabid/task-tracker-cli/internal/constants"
+        "github.com/aminulislamabid/task-tracker-cli/internal/models"
+)
+
+// Setup for testing task features
+func Setup() <span class="cov8" title="1">{
+        models.Tasks = []models.Task{}
+        os.Remove(constants.TestFilename)
+}</span>
+
+// Create a temporary file for testing
+func CreateTempFile(t *testing.T) *os.File <span class="cov8" title="1">{
+        file, err := os.CreateTemp("./", "tasks_test_*.json")
+        if err != nil </span><span class="cov0" title="0">{
+                t.Fatalf("Failed to create temp file: %v", err)
+        }</span>
+        <span class="cov8" title="1">return file</span>
+}
+
+func FindTaskById(id int) *models.Task <span class="cov8" title="1">{
+        for i := range models.Tasks </span><span class="cov8" title="1">{
+                if models.Tasks[i].ID == id </span><span class="cov8" title="1">{
+                        return &amp;models.Tasks[i]
+                }</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func ConvertTaskStatus(status string) models.TaskStatus <span class="cov0" title="0">{
+        switch status </span>{
+        case "todo":<span class="cov0" title="0">
+                return models.Todo</span>
+        case "in-progress":<span class="cov0" title="0">
+                return models.InProgress</span>
+        case "done":<span class="cov0" title="0">
+                return models.Done</span>
+        default:<span class="cov0" title="0">
+                return models.Todo</span>
+        }
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
